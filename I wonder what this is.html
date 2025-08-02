@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      background-color: #e0f2e9;
+      color: #2e7d32;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    #balloons {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .balloon {
+      position: absolute;
+      width: 30px;
+      height: 50px;
+      background-color: #81c784;
+      border-radius: 50% 50% 50% 50%;
+      animation: float 6s ease-in infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh); }
+      100% { transform: translateY(-100vh); }
+    }
+    button {
+      background-color: #66bb6a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h2 id="question">What day is it today?</h2>
+  <input type="text" id="dateInput" placeholder="e.g. August 3" />
+  <br>
+  <button onclick="checkDate()">Submit</button>
+
+  <div id="hint" class="hidden"></div>
+
+  <div id="step2" class="hidden">
+    <h2>Correct! 🎉</h2>
+    <p>Do you know what that means?</p>
+    <button onclick="showStep3(true)">Yes</button>
+    <button onclick="showStep3(false)">No</button>
+  </div>
+
+  <div id="step3Wrong" class="hidden">
+    <p>Try again... Think about what makes this day special 🥳</p>
+  </div>
+
+  <div id="step3Right" class="hidden">
+    <h2>Yes, you guessed right!</h2>
+    <p>Today you are officially closer to 30!</p>
+    <p>How do you feel about that?</p>
+    <button onclick="showFinalMessage('good')">Good 😄</button>
+    <button onclick="showFinalMessage('bad')">Bad 😅</button>
+  </div>
+
+  <div id="finalGood" class="hidden">
+    <div id="balloons"></div>
+    <h1>🎈 Happy Birthday, Old Man 🎈</h1>
+    <p>May Allah grant you a long life full of health and peace.<br>
+      InshaAllah this year brings you closer to everything you’ve been working toward and everything you’ve been hoping for.<br>
+      May your days be filled with meaning and your efforts met with success.</p>
+  </div>
+
+  <div id="finalBad" class="hidden">
+    <div id="balloons"></div>
+    <h1>😢 Aww, it's not so bad!</h1>
+    <p>You're older, wiser, and still have your hair (hopefully).<br>
+      May Allah grant you a long life full of health and peace.<br>
+      InshaAllah this year brings you closer to everything you’ve been working toward and everything you’ve been hoping for.<br>
+      May your days be filled with meaning and your efforts met with success.</p>
+  </div>
+
+  <script>
+    function checkDate() {
+      const input = document.getElementById('dateInput').value.trim().toLowerCase();
+      const correctDate = 'august 3';
+      const hint = document.getElementById('hint');
+
+      if (input === correctDate) {
+        document.getElementById('question').classList.add('hidden');
+        document.getElementById('dateInput').classList.add('hidden');
+        hint.classList.add('hidden');
+        document.querySelector('button').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+      } else {
+        hint.innerText = "Hmm... it's the birthday of someone whose name rhymes with 'champs' 🎂";
+        hint.classList.remove('hidden');
+      }
+    }
+
+    function showStep3(answer) {
+      if (answer) {
+        document.getElementById('step2').classList.add('hidden');
+        document.getElementById('step3Right').classList.remove('hidden');
+      } else {
+        document.getElementById('step3Wrong').classList.remove('hidden');
+      }
+    }
+
+    function showFinalMessage(feeling) {
+      document.getElementById('step3Right').classList.add('hidden');
+
+      if (feeling === 'good') {
+        document.getElementById('finalGood').classList.remove('hidden');
+      } else {
+        document.getElementById('finalBad').classList.remove('hidden');
+      }
+
+      createBalloons();
+    }
+
+    function createBalloons() {
+      const container = document.getElementById('balloons');
+      for (let i = 0; i < 30; i++) {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.animationDelay = Math.random() * 5 + 's';
+        balloon.style.backgroundColor = ['#a5d6a7', '#c8e6c9', '#81c784'][Math.floor(Math.random() * 3)];
+        container.appendChild(balloon);
+      }
+    }
+  </script>
+</body>
+</html>
